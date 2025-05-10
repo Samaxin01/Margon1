@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subject Quiz App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #141313;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+    }
+    .quiz-container {
+      background: #141313;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+    }
+    label{
+        color: white;
+    }
+    .question, .subject-label {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: wheat;
+        text-align: center;
+        font-weight: bold;
+    }
+    .options button, .subject-checkbox {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        font-size: 1rem;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        background: orangered;
+        transition: background 0.3s;
+        position: relative;
+        top: 22px;
+        color: white;
+    }
+    .options button.selected {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .options button.selected:hover{
+        background-color: gray;
+    }
+    .options button:disabled {
+      cursor: not-allowed;
+      background-color: orangered;
+    }
+    .timer {
+      font-size: 1rem;
+      color: #ff5722;
+      margin-bottom: 1rem;
+    }
+    .btn, .next-btn, .restart-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: green;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .next-btn:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+    .score {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .review {
+      margin-top: 1rem;
+    }
+    .review-item {
+      margin-bottom: 1rem;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+    #lastScoreDisplay {
+      text-align: center;
+      font-size: 1rem;
+      color: orangered;
+    }
+  </style>
+</head>
+<body>
+    
+  <div class="quiz-container" id="subjectSelection">
+    <div id="lastScoreDisplay"></div>
+    <div class="subject-label">Select 4 subjects:</div>
+    <div id="subjects"></div>
+    <button class="btn" id="startQuizBtn" disabled>Start Quiz</button>
+    <a href="exam.html"><button class="btn" style="    color: white;
+    background: gray;">Back</button></a>
+  </div>
+
+  <div class="quiz-container" id="quizSection" style="display: none;">
+    <div class="timer" id="timer">Time left: 10s</div>
+    <div class="question" id="question">Question will appear here</div>
+    <div class="options" id="options"></div>
+    <button class="next-btn" id="nextBtn" disabled>Next</button>
+    <div class="score" id="score"></div>
+    <div class="review" id="review"></div>
+    <button class="restart-btn" id="restartBtn" style="display: none;">Restart Quiz</button>
+  </div>
+
+  <script>
+   
+    // Optional: Close popup when clicking outside
+    window.addEventListener('click', () => {
+      if (e.target == popup) {
+        popup.style.display = 'none';
+      }
+    });
+
+    //others
+    const subjectBank = {
+      Math: [
+        { question: "2 + 2 = ?", options: ["3", "4", "5", "6"], answer: 1 },
+        { question: "Square root of 9?", options: ["1", "3", "6", "9"], answer: 1 }
+      ],
+      English: [
+        { question: "Synonym of fast?", options: ["Quick", "Slow", "Tall", "Happy"], answer: 0 },
+        { question: "Opposite of up?", options: ["Under", "Low", "Down", "Bottom"], answer: 2 }
+      ],
+
+      English: [
+      { question: "Choose the word that is most nearly opposite in the meaning to the underlined word or group of words that will fill in the sentence.   AT FIRST WE FOUND LIFE IN THE TOWN VERY EXCITING BUT SOON IT BECAME RATHER _______", options: ["tiring", "disturbing", "burdensome", "boring"], answer: 3 },
+      { question: "Opposite of up?", options: ["Under", "Low", "Down", "Bottom"], answer: 2 }
+    ],
+      Science: [
+        { question: "Water's formula?", options: ["H2O", "CO2", "O2", "NaCl"], answer: 0 },
+        { question: "The sun is a...?", options: ["Planet", "Star", "Gas", "Rock"], answer: 1 }
+      ],
+      History: [
+        { question: "Who discovered America?", options: ["Columbus", "Newton", "Einstein", "Edison"], answer: 0 },
+        { question: "First World War started in?", options: ["1914", "1920", "1939", "1945"], answer: 0 }
+      ],
+      Geography: [
+        { question: "Largest ocean?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], answer: 2 },
+        { question: "Sahara is a...?", options: ["Mountain", "Forest", "Desert", "River"], answer: 2 }
+      ],
+      Biology: [
+        { question: "Cell is the unit of...?", options: ["Matter", "Life", "Air", "Energy"], answer: 1 },
+        { question: "Human has how many lungs?", options: ["1", "2", "3", "4"], answer: 1 }
+      ],
+      Physics: [
+        { question: "Gravity was discovered by?", options: ["Einstein", "Tesla", "Newton", "Edison"], answer: 2 },
+        { question: "Speed formula?", options: ["Distance/Time", "Time*Distance", "Force*Mass", "None"], answer: 0 }
+      ],
+      Chemistry: [
+        { question: "Symbol for Sodium?", options: ["Na", "So", "Sn", "Sd"], answer: 0 },
+        { question: "Acid turns litmus...?", options: ["Blue", "Red", "Green", "White"], answer: 1 }
+      ]
+      
+    };
+
+    let selectedSubjects = [];
+    let questions = [];
+    let currentQuestion = 0;
+    let timer;
+    let timeLeft = 10;
+    let optionSelected = false;
+    let score = 0;
+    let userAnswers = [];
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const timerEl = document.getElementById("timer");
+    const scoreEl = document.getElementById("score");
+    const reviewEl = document.getElementById("review");
+    const restartBtn = document.getElementById("restartBtn");
+    const lastScoreDisplay = document.getElementById("lastScoreDisplay");
+    const subjectsDiv = document.getElementById("subjects");
+    const startQuizBtn = document.getElementById("startQuizBtn");
+    const subjectSelection = document.getElementById("subjectSelection");
+    const quizSection = document.getElementById("quizSection");
+
+    function shuffleArray(arr) {
+      return arr.sort(() => Math.random() - 0.5);
+    }
+
+    function createSubjectSelector() {
+      Object.keys(subjectBank).forEach(subject => {
+        const label = document.createElement("label");
+        label.innerHTML = `<input type='checkbox' value='${subject}' class='subject-checkbox' /> ${subject}`;
+        subjectsDiv.appendChild(label);
+      });
+    }
+
+    subjectsDiv.addEventListener("change", () => {
+      const checked = document.querySelectorAll(".subject-checkbox:checked");
+      startQuizBtn.disabled = checked.length !== 4;
+    });
+
+    startQuizBtn.addEventListener("click", () => {
+      selectedSubjects = [...document.querySelectorAll(".subject-checkbox:checked")].map(c => c.value);
+      questions = shuffleArray(selectedSubjects.flatMap(s => subjectBank[s]));
+      subjectSelection.style.display = "none";
+      quizSection.style.display = "block";
+      currentQuestion = 0;
+      score = 0;
+      userAnswers = [];
+      timerEl.style.display = "block";
+      nextBtn.style.display = "inline-block";
+      restartBtn.style.display = "none";
+      reviewEl.innerHTML = "";
+      scoreEl.innerHTML = "";
+      showQuestion(currentQuestion);
+    });
+
+    function startTimer() {
+      timeLeft = 10;
+      timerEl.textContent = `Time left: ${timeLeft}s`;
+      timer = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = `Time left: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          disableOptions();
+        }
+      }, 1000);
+    }
+
+    function disableOptions() {
+      document.querySelectorAll(".option-btn").forEach(btn => btn.disabled = true);
+    }
+
+    function showQuestion(index) {
+      optionSelected = false;
+      nextBtn.disabled = true;
+      const q = questions[index];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.classList.add("option-btn");
+        btn.onclick = () => {
+          if (!optionSelected && timeLeft > 0) {
+            optionSelected = true;
+            document.querySelectorAll(".option-btn").forEach(b => b.disabled = true);
+            btn.classList.add("selected");
+            nextBtn.disabled = false;
+            userAnswers.push(i);
+            if (i === q.answer) score++;
+          }
+        };
+        optionsEl.appendChild(btn);
+      });
+      startTimer();
+    }
+
+    function showReview() {
+      scoreEl.textContent = `You scored ${score} out of ${questions.length}`;
+      localStorage.setItem('lastScore', score);
+      reviewEl.innerHTML = "<h3>Review:</h3>";
+      questions.forEach((q, idx) => {
+        const reviewItem = document.createElement("div");
+        reviewItem.className = "review-item";
+        const userAnswer = userAnswers[idx];
+        const correct = userAnswer === q.answer;
+        reviewItem.innerHTML = `<strong>Q${idx + 1}: ${q.question}</strong><br>
+          Your answer: <span class="${correct ? 'correct' : 'wrong'}">${q.options[userAnswer] || 'No answer'}</span><br>
+          Correct answer: <span class="correct">${q.options[q.answer]}</span>`;
+        reviewEl.appendChild(reviewItem);
+      });
+      restartBtn.style.display = 'block';
+    }
+
+    nextBtn.addEventListener("click", () => {
+      clearInterval(timer);
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion(currentQuestion);
+      } else {
+        questionEl.textContent = "Quiz Completed!";
+        optionsEl.innerHTML = "";
+        timerEl.style.display = "none";
+        nextBtn.style.display = "none";
+        showReview();
+      }
+    });
+
+    restartBtn.addEventListener("click", () => {
+      subjectSelection.style.display = "block";
+      quizSection.style.display = "none";
+      document.querySelectorAll(".subject-checkbox").forEach(c => c.checked = false);
+      startQuizBtn.disabled = true;
+    });
+
+    function displayLastScore() {
+      const last = localStorage.getItem('lastScore');
+      if (last !== null) {
+        lastScoreDisplay.textContent = `Last Score: ${last}`;
+      }
+    }
+
+    window.onbeforeunload = () => {
+      return "You cannot exit the quiz while playing.";
+    };
+
+    createSubjectSelector();
+    displayLastScore();
+  </script>
+</body>
+</html>

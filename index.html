@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Process</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif;
+            background: #141313;
+            color: orange;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        
+        
+        .container {
+            width: 300px;
+           
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #message {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+        }
+        input#verification-code{
+          border-radius: 2rem;
+          padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+        }
+        
+        button{
+          background: orange;
+    color: white;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+        }
+    </style>
+    <div class="container">
+        <h2>Verification Process</h2>
+        <input type="text" id="verification-code" placeholder="Enter verification code">
+        <button id="verify-btn">Verify</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+      // Available verification codes
+const verificationCodes = ['12638', '28373', '204749', '37559', '375002', '([FMT>nx[yHqF', 'O/gRr.PuUYfoO',];
+
+// Get elements
+const verifyBtn = document.getElementById('verify-btn');
+const verificationCodeInput = document.getElementById('verification-code');
+const messageElement = document.getElementById('message');
+
+// Load used codes and user info from LocalStorage
+let usedCodes = JSON.parse(localStorage.getItem('usedCodes')) || [];
+let userInfo = JSON.parse(localStorage.getItem('userInfo')) || [];
+
+// Check if user has already verified
+if (userInfo.length > 0) {
+    window.location.href = 'main.html'; // Replace 'main.html' with your actual main page URL
+}
+
+// Function to verify code
+function verifyCode(code) {
+    if (usedCodes.includes(code)) {
+        messageElement.textContent = 'Code already used!';
+        messageElement.style.color = 'red';
+    } else if (verificationCodes.includes(code)) {
+        usedCodes.push(code);
+        localStorage.setItem('usedCodes', JSON.stringify(usedCodes));
+        messageElement.textContent = 'Code verified successfully! Redirecting...';
+        messageElement.style.color = 'green';
+        // Save user info with verification code
+        userInfo.push({ code });
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+        // Redirect to main page after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'main.html'; // Replace 'main.html' with your actual main page URL
+        }, 2000);
+    } else {
+        messageElement.textContent = 'Invalid code!';
+        messageElement.style.color = 'red';
+    }
+}
+
+// Add event listener to verify button
+verifyBtn.addEventListener('click', () => {
+    const code = verificationCodeInput.value.trim();
+    if (code) {
+        verifyCode(code);
+        verificationCodeInput.value = '';
+    } else {
+        messageElement.textContent = 'Please enter a code!';
+        messageElement.style.color = 'red';
+    }
+});
+
+    </script>
+</body>
+</html>

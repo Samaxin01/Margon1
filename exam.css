@@ -1,0 +1,170 @@
+body{
+    background-color: #141313;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+.exam-subjects{
+    text-align: center;
+    
+}
+
+.science1{
+    color: white;
+    margin: 2%;
+    background-color: green;
+    padding-top: 0.2%;
+    padding-bottom: 0.2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    text-align: center;
+    border-radius: 1rem;
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    animation: gradient-outline 2s linear infinite;
+}
+.science1:hover{
+    background-color: white;
+    color: green;
+}
+.science2{
+    color: white;
+    margin: 2%;
+    background-color: green;
+    padding-top: 0.2%;
+    padding-bottom: 0.2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    text-align: center;
+    border-radius: 1rem;
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    animation: gradient-outline 2s linear infinite;
+}
+.science3{
+    color: white;
+    margin: 2%;
+    background-color: green;
+    padding-top: 0.2%;
+    padding-bottom: 0.2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    text-align: center;
+    border-radius: 1rem;
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    animation: gradient-outline 2s linear infinite;
+}
+.science4{
+    color: white;
+    margin: 2%;
+    background-color: green;
+    padding-top: 0.2%;
+    padding-bottom: 0.2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    text-align: center;
+    border-radius: 1rem;
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    animation: gradient-outline 2s linear infinite;
+}
+
+.art{
+    color: white;
+    margin: 2%;
+    background-color: orangered;
+    padding-top: 0.2%;
+    padding-bottom: 0.2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    text-align: center;
+    border-radius: 1rem;
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    animation: gradient-outline 2s linear infinite;
+    transition: 5s;
+}
+.art:hover{
+    background-color: white;
+    color: orangered;
+}
+
+.commercial {
+    color: white;
+    margin: 2%;
+    background-color: orange;
+    padding-top: 0.2%;
+    padding-bottom: 0.2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    text-align: center;
+    border-radius: 1rem;
+    text-decoration: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    animation: gradient-outline 2s linear infinite;
+}
+.commercial:hover{
+    background-color: white;
+    color: orange;
+}
+.name h1{
+    background: white;
+    padding-top: 5%;
+    text-align: center;
+    padding-bottom: 5%;
+    margin-top: 0%;
+    position: fixed;
+    width: 100%;
+    top: -0.2%;
+}
+.name{
+    color: green;
+    margin-top: 30%;
+}
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  a{
+    text-decoration: none;
+    color: white;
+  }
+  a:hover{
+    color: green;
+  }

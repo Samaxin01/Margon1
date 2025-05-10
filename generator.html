@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        
+        #generated-password {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        
+        #message {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+    </style>
+    <div class="container">
+        <h2>Password Generator</h2>
+        <input type="number" id="password-length" placeholder="Enter password length">
+        <button id="generate-btn">Generate Password</button>
+        <input type="text" id="generated-password" readonly>
+        <button id="copy-btn">Copy</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        // Get elements
+const generateBtn = document.getElementById('generate-btn');
+const passwordLengthInput = document.getElementById('password-length');
+const generatedPasswordInput = document.getElementById('generated-password');
+const copyBtn = document.getElementById('copy-btn');
+const messageElement = document.getElementById('message');
+
+// Function to generate password
+function generatePassword(length) {
+    const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const symbols = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+    const allCharacters = uppercaseLetters + lowercaseLetters + symbols;
+    let password = '';
+
+    // Ensure password includes at least one of each type of character
+    password += getRandomCharacter(uppercaseLetters);
+    password += getRandomCharacter(lowercaseLetters);
+    password += getRandomCharacter(symbols);
+
+    // Fill the rest of the password length with random characters
+    for (let i = 0; i < length - 3; i++) {
+        password += getRandomCharacter(allCharacters);
+    }
+
+    // Shuffle the password to avoid the first three characters always being in the same character type order
+    password = shuffleString(password);
+
+    return password;
+}
+
+// Function to get a random character from a string
+function getRandomCharacter(characters) {
+    return characters.charAt(Math.floor(Math.random() * characters.length));
+}
+
+// Function to shuffle a string
+function shuffleString(str) {
+    let arr = str.split('');
+    for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr.join('');
+}
+
+// Add event listener to generate button
+generateBtn.addEventListener('click', () => {
+    const length = parseInt(passwordLengthInput.value.trim());
+    if (length >= 3) {
+        const password = generatePassword(length);
+        generatedPasswordInput.value = password;
+        messageElement.textContent = '';
+    } else {
+        messageElement.textContent = 'Password length must be at least 3!';
+        messageElement.style.color = 'red';
+    }
+});
+
+// Add event listener to copy button
+copyBtn.addEventListener('click', () => {
+    const password = generatedPasswordInput.value;
+    if (password) {
+        navigator.clipboard.writeText(password).then(() => {
+            messageElement.textContent = 'Password copied!';
+            messageElement.style.color = 'green';
+        });
+    } else {
+        messageElement.textContent = 'No password to copy!';
+        messageElement.style.color = 'red';
+    }
+});
+
+    </script>
+</body>
+</html>

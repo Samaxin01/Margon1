@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JAMB CBT - Subject Selection</title>
+  <style>
+    body { font-family: Arial;
+        padding: 20px;
+        background: #141313;
+        color: white;
+    text-align: center; }
+    .subjects { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .subject {
+      padding: 10px 15px;
+      border: 1px solid orange;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .selected { background-color: orange; color: white; }
+    .locked { background-color: #333; color: white; pointer-events: none; }
+    button { margin-top: 20px;
+        padding: 10px 20px;
+        color: white;
+        background: orange;}
+    h2 {color: orange; }
+  </style>
+</head>
+<body>
+
+<h2>Select 3 Subjects (English is compulsory)</h2>
+
+<div class="subjects" id="subjectList">
+  <div class="subject locked">English</div>
+  <div class="subject">Mathematics</div>
+  <div class="subject">Biology</div>
+  <div class="subject">Chemistry</div>
+  <div class="subject">Physics</div>
+  <div class="subject">Literature</div>
+  <div class="subject">Government</div>
+  <div class="subject">Economics</div>
+  <div class="subject">CRS</div>
+  <div class="subject">Geography</div>
+  <div class="subject">Commerce</div>
+  <div class="subject">Agriculture</div>
+</div>
+
+<button id="startBtn" disabled>Get Started</button>
+
+<script>
+  const subjectEls = document.querySelectorAll(".subject:not(.locked)");
+  const startBtn = document.getElementById("startBtn");
+  let selectedSubjects = [];
+
+  subjectEls.forEach(subject => {
+    subject.addEventListener("click", () => {
+      const subjectName = subject.textContent;
+      if (subject.classList.contains("selected")) {
+        subject.classList.remove("selected");
+        selectedSubjects = selectedSubjects.filter(sub => sub !== subjectName);
+      } else {
+        if (selectedSubjects.length < 3) {
+          subject.classList.add("selected");
+          selectedSubjects.push(subjectName);
+        }
+      }
+      startBtn.disabled = selectedSubjects.length !== 3;
+    });
+  });
+
+  startBtn.addEventListener("click", () => {
+    const allSubjects = ["English", ...selectedSubjects];
+    localStorage.setItem("selectedSubjects", JSON.stringify(allSubjects));
+    window.location.href = "quiz.html";
+  });
+</script>
+
+</body>
+</html>
